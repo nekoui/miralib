@@ -313,4 +313,21 @@ public class Project {
     Log.error(err, new RuntimeException(err));
     return -1;
   }
+  
+  public float pvalue() {
+    if (pValue == P0_001) return 0.001f;
+    else if (pValue == P0_005) return 0.005f;
+    else if (pValue == P0_01) return 0.01f;
+    else if (pValue == P0_05) return 0.05f;
+    else if (pValue == P0_1) return 0.1f;
+    else return 1;
+  }  
+  
+  public float missingThreshold() {
+    if (missingThreshold == MISS_10) return 0.1f;
+    else if (missingThreshold == MISS_20) return 0.2f;
+    else if (missingThreshold == MISS_40) return 0.4f;
+    else if (missingThreshold == MISS_80) return 0.8f;
+    else return 1;    
+  }  
 }
