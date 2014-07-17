@@ -20,7 +20,7 @@ public class Preferences {
   static final protected int defSurrCount = 100;
   static final protected float defThreshold = 1E-3f;  
   
-  public String projectFolder; // TODO: need to initialize from latest project (parent of)
+  public String projectFolder;
   
   public int pValue;
   public String missingString; 
@@ -32,12 +32,12 @@ public class Preferences {
   protected Settings settings;
   
   public Preferences() throws IOException {
-    this(".mirador");
-  }
+    this("");
+  }  
   
-  public Preferences(String name) throws IOException {
+  public Preferences(String defFolder) throws IOException {
     File home = new File(System.getProperty("user.home"));
-    File path = new File(home, name);
+    File path = new File(home, ".mirador");
     if (!path.exists()) {
       if (!path.mkdirs()) {
         String err = "Cannot create a folder to store the preferences";
@@ -48,6 +48,7 @@ public class Preferences {
     File file = new File(path, "preferences.cfg");
     settings = new Settings(file);
     if (file.exists()) {      
+      projectFolder = settings.get("data.folder", defFolder);      
       missingString = settings.get("missing.string", defMissingString);
       missingThreshold = Project.stringToMissing(settings.get("missing.threshold", 
                          Project.missingToString(defMissThreshold)));
@@ -59,6 +60,7 @@ public class Preferences {
       surrCount = settings.getInteger("correlation.surrogates", defSurrCount);
       threshold = settings.getFloat("correlation.threshold", defThreshold);      
     } else {
+      projectFolder = defFolder;
       pValue = defPValue;             
       missingString = defMissingString;
       missingThreshold = defMissThreshold;
@@ -66,13 +68,18 @@ public class Preferences {
       surrCount = defSurrCount;
       threshold = defThreshold;
       
-      settings.set("missing.string", missingString);
-      settings.set("missing.threshold", Project.missingToString(missingThreshold));      
-      settings.set("correlation.pvalue", Project.pvalueToString(pValue));
-      settings.set("correlation.algorithm", Similarity.algorithmToString(depTest));
-      settings.setInteger("correlation.surrogates", surrCount);
-      settings.setFloat("correlation.threshold", threshold);      
-      settings.save();
+      save();
     }
+  }
+  
+  public void save() {
+    settings.set("data.folder", projectFolder);
+    settings.set("missing.string", missingString);
+    settings.set("missing.threshold", Project.missingToString(missingThreshold));      
+    settings.set("correlation.pvalue", Project.pvalueToString(pValue));
+    settings.set("correlation.algorithm", Similarity.algorithmToString(depTest));
+    settings.setInteger("correlation.surrogates", surrCount);
+    settings.setFloat("correlation.threshold", threshold);      
+    settings.save();    
   }
 }

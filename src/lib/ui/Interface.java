@@ -24,7 +24,7 @@ import processing.core.PShape;
  */
 
 public class Interface implements PConstants {
-  static protected boolean SHOW_DEBUG_INFO = false;
+  public static boolean SHOW_DEBUG_INFO = false;
   
   static public int INIT   = 0;
   static public int UPDATE = 1;
