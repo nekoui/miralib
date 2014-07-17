@@ -1,0 +1,47 @@
+<project name="Miralib" default="dist" basedir="../">
+
+<!--	
+		Simple ant build file that generates the miralib jar file
+		to include in other Java applications or packages.
+-->
+	
+	<property name="project.target" value="1.6"/>	
+	<property name="project.name" value="miralib"/>	
+	<property name="project.jar.name" value="${project.name}.jar"/>
+	<property name="project.src" location="src"/>
+	<property name="project.bin" location="bin"/>
+	<property name="project.dist" location="dist"/>
+	<property name="project.lib" location="lib"/>
+
+	<path id="classpath">
+		<fileset dir="${project.lib}" includes="**/*.jar" />
+	</path>		
+
+	<target name="init"> 	
+	  <delete dir="${project.bin}"/>
+	  <mkdir dir="${project.bin}"/>
+	</target>
+	
+	<target name="compile">
+	  <javac srcdir="${project.src}" destdir="${project.bin}" source="${project.target}" target="${project.target}" includeantruntime="false">
+			<classpath>
+				<path refid="classpath"/>
+			</classpath>
+			<compilerarg value="-Xlint"/>	  
+	  	<include name="**/*.java" />
+	  </javac>	
+	</target>
+			
+	<target name="makejar">
+	  <jar jarfile="${project.dist}/${project.jar.name}" basedir="${project.bin}"/>
+	</target>
+	
+	<target name="dist">
+	  <echo>Creating mirador jar...</echo>
+	  <antcall target="init" />
+	  <antcall target="compile" />
+	  <antcall target="makejar" />
+	  <echo>Done.</echo>
+	</target>	
+	
+</project>
