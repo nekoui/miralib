@@ -18,7 +18,7 @@ import mira.shannon.Histogram;
  */
 
 public class DataSlice2D {
-  final static public int MAX_SLICE_SIZE = 13000;
+  final static public int MAX_SLICE_SIZE = Integer.MAX_VALUE;
   
   public Variable varx, vary;
   public DataRanges ranges;
@@ -194,10 +194,7 @@ public class DataSlice2D {
     int nmis = 0;    
     double wsum = 0;  
     int rcount = data.getRowCount();
-    float p = 1.0f;
-    if (MAX_SLICE_SIZE < rcount) {
-      p = (float)MAX_SLICE_SIZE / (float)rcount;
-    }
+    float p = (float)MAX_SLICE_SIZE / (float)rcount;
     for (int r = 0; r < rcount; r++) {
       if (p < 1 && p < Math.random()) continue;
       TableRow row = data.getRow(r);        
