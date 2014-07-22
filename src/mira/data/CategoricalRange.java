@@ -12,7 +12,6 @@ import processing.data.TableRow;
 /**
  * Range for a categorical variable (a set of categories).
  *
- * @author Andres Colubri
  */
 
 public class CategoricalRange extends Range {

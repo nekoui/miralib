@@ -11,7 +11,6 @@ import processing.data.Table;
 /**
  * A hierarchical data tree defined by groups, tables, and variables. 
  *
- * @author Andres Colubri
  */
 
 public class DataTree {

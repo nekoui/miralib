@@ -14,7 +14,6 @@ import mira.shannon.Histogram;
  * 2-dimensional data slice, i.e.: all the (normalized) data value pairs for two 
  * variables from the rows that satisfy the range conditions. 
  *
- * @author Andres Colubri
  */
 
 public class DataSlice2D {

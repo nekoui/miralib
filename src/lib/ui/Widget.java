@@ -24,7 +24,6 @@ import processing.core.PStyle;
  * anchor widget affects all the widgets anchored to it. Furthermore, the 
  * internal coordinates of a widget are relative to its parent. 
  *
- * @author Andres Colubri
  */
 
 public class Widget implements PConstants {

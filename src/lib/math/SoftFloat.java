@@ -7,7 +7,6 @@ import processing.core.PApplet;
 /**
  * Simple soft float class to implement smooth animations
  * 
- * @author Andres Colubri
  */
 
 public class SoftFloat {

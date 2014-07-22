@@ -9,7 +9,6 @@ import processing.core.PApplet;
 /**
  * Calculation of the joint entropy of a 2D slice.
  *
- * @author Andres Colubri
  */
 
 public class JointEntropy {

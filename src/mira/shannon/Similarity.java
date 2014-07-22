@@ -17,7 +17,6 @@ import mira.utils.Project;
 /**
  * Similarity score between two variables.
  *
- * @author Andres Colubri
  */
 
 public class Similarity {

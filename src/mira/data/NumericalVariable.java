@@ -12,7 +12,6 @@ import processing.data.TableRow;
  * Subclass of Variable to represent a numerical variable (integer, long, float
  * or double).
  *
- * @author Andres Colubri
  */
 
 public class NumericalVariable extends Variable {  

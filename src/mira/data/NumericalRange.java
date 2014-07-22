@@ -12,7 +12,6 @@ import processing.data.TableRow;
 /**
  * Range for a numerical variable (a minimum and a maximum value).
  *
- * @author Andres Colubri
  */
 
 public class NumericalRange extends Range {

@@ -9,7 +9,6 @@ import mira.shannon.Similarity;
 /**
  * Mirador preferences, that are used when no project file is provided.
  *
- * @author Andres Colubri
  */
 
 public class Preferences {

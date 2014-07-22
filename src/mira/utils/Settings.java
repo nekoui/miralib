@@ -12,7 +12,6 @@ import processing.core.PApplet;
 /**
  * Generic class to store program preferences.
  *
- * @author Ben Fry, Andres Colubri
  */
 
 public class Settings {

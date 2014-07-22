@@ -27,7 +27,6 @@ import processing.core.PConstants;
  * CSS Parser: http://cssparser.sourceforge.net/index.html
  * SAC (The Simple API for CSS): http://www.w3.org/Style/CSS/SAC/
  *
- * @author Andres Colubri
  */
 
 public class Style {

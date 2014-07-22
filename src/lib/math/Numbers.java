@@ -5,7 +5,6 @@ package lib.math;
 /**
  * Basic utilities to deal with numeric values.
  * 
- * @author Andres Colubri
  */
 
 public class Numbers {

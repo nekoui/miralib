@@ -11,7 +11,6 @@ import processing.core.PApplet;
 /**
  * Message logging.
  *
- * @author Andres Colubri
  */
 
 public class Log {

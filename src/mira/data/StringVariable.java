@@ -5,7 +5,6 @@ package mira.data;
 /**
  * String variable.
  *
- * @author Andres Colubri
  */
 
 public class StringVariable {

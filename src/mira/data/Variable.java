@@ -13,7 +13,6 @@ import processing.data.TableRow;
  * Class holding all the meta-information needed to define a varible in the 
  * dataset (name, alias, min/max range, etc.)
  *
- * @author Andres Colubri
  */
 
 abstract public class Variable implements DataTree.Item {

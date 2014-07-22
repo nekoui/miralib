@@ -9,7 +9,6 @@ import processing.data.TableRow;
 /**
  * Base abstract class to define variable ranges.
  *
- * @author Andres Colubri
  */
 
 abstract public class Range {

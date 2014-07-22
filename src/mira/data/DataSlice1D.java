@@ -12,7 +12,6 @@ import processing.data.TableRow;
  * 1-dimensional data slice, i.e.: all the (normalized) data values for a single
  * variable from the rows that satisfy the range conditions. 
  *
- * @author Andres Colubri
  */
 
 public class DataSlice1D {

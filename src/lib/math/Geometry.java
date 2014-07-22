@@ -6,7 +6,6 @@ package lib.math;
  * Some handy geometry calculations (e.g.: line segment intersection, point-inside-
  * polygon, etc.)  
  * 
- * @author Andres Colubri
  */
 
 public class Geometry {

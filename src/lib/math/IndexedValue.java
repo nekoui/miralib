@@ -5,7 +5,6 @@ package lib.math;
 /**
  * Comparable implementation for indexed values
  * 
- * @author Andres Colubri
  */
 
 public class IndexedValue implements Comparable<IndexedValue> {

@@ -20,7 +20,6 @@ import processing.core.PShape;
  * Root class for a UI, where Widgets can be added to. It handles keyboard and 
  * mouse event handling, clipping, update.
  *
- * @author Andres Colubri
  */
 
 public class Interface implements PConstants {

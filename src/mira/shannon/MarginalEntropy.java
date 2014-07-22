@@ -9,7 +9,6 @@ import processing.core.PApplet;
 /**
  * Calculation of the marginal entropy of a 1D slice.
  *
- * @author Andres Colubri
  */
 
 public class MarginalEntropy {

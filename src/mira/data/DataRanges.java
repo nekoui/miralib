@@ -9,7 +9,6 @@ import mira.utils.Log;
 /**
  * Dictionary that links variables with their respective ranges.
  *
- * @author Andres Colubri
  */
 
 @SuppressWarnings("serial")

@@ -12,7 +12,6 @@ import processing.data.TableRow;
 /**
  * Subclass of Variable to represent a categorical variable.
  *
- * @author Andres Colubri
  */
 
 public class CategoricalVariable extends Variable {

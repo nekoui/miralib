@@ -31,7 +31,6 @@ import mira.utils.Project;
  * Class holding all the information required to specify a dataset (tables, 
  * hierarchy tree, sort variable, etc.)
  *
- * @author Andres Colubri
  */
 
 public class DataSet {

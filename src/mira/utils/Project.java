@@ -16,7 +16,6 @@ import processing.core.PApplet;
 /**
  * Mirador project information.
  *
- * @author Andres Colubri
  */
 
 public class Project {

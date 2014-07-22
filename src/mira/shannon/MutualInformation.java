@@ -8,7 +8,6 @@ import mira.data.Value2D;
 /**
  * Calculation of the mutual information of a 2D slice.
  *
- * @author Andres Colubri
  */
 
 

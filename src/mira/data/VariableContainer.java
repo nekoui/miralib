@@ -5,7 +5,6 @@ package mira.data;
 /**
  * Element to store an item in the data tree (either group, table or variable).
  *
- * @author Andres Colubri
  */
 
 public class VariableContainer implements DataTree.Item {

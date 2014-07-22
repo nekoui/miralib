@@ -7,7 +7,6 @@ import lib.math.Numbers;
 /**
  * A 2-dimensional weighted value.
  *
- * @author Andres Colubri
  */
 
 public class Value2D {

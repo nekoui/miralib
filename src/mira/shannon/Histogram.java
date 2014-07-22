@@ -17,7 +17,6 @@ import processing.core.PApplet;
  * Optimal Histogram bin size calculation from Shimazaki and Shinomoto:
  * http://toyoizumilab.brain.riken.jp/hideaki/res/histogram.html
  *
- * @author Andres Colubri
  */
 
 public class Histogram {
