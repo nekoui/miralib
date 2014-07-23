@@ -33,8 +33,6 @@ public class Interface implements PConstants {
   static public char[] ALL_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
   
   public PApplet app;
-  
-  protected PGraphics canvas;  
   protected Widget root;
   protected Widget selected;
   protected ArrayList<Widget> drawnWidgets;
@@ -53,20 +51,19 @@ public class Interface implements PConstants {
   private HashMap<String, PShape> shapeCache;
   private Style style;
 
-  public Interface(PApplet app, PGraphics canvas) {
-    this(app, canvas, null);
+  public Interface(PApplet app) {
+    this(app, null);
   }
   
-  public Interface(PApplet app, PGraphics canvas, String cssfile) {
+  public Interface(PApplet app, String cssfile) {
     this.app = app;
-    this.canvas = canvas;
     
     root = new Widget(this);
     selected = null;
     drawnWidgets = new ArrayList<Widget>();
     state = INIT;
     
-    viewport = currentClip = new ClipRect(0, 0, canvas.width, canvas.height);
+    viewport = currentClip = new ClipRect(0, 0, app.width, app.height);
     clipStack = new Stack<ClipRect>();    
     
     imageCache = new HashMap<String, PImage>();
@@ -189,10 +186,10 @@ public class Interface implements PConstants {
     }
     
     void set() {      
-      if (equalsTo(0, 0, canvas.width, canvas.height)) {
-        canvas.noClip();
+      if (equalsTo(0, 0, app.width, app.height)) {
+//        canvas.noClip();
       } else {  
-        canvas.clip(x, y, w, h);
+//        canvas.clip(x, y, w, h);
       }
     }
     

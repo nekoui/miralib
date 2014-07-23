@@ -264,7 +264,7 @@ public class Widget implements PConstants {
     for (Widget child: children) {
       if (child.clipBounds) child.setClip();
       
-      intf.canvas.pushMatrix();
+      intf.app.pushMatrix();
       child.setOrigin();
       
       boolean canDraw = child.visible() && child.canDraw();
@@ -282,7 +282,7 @@ public class Widget implements PConstants {
         child.postDraw();
       }
 
-      intf.canvas.popMatrix();
+      intf.app.popMatrix();
        
       if (child.clipBounds) child.unsetClip();
     }    
@@ -638,7 +638,7 @@ public class Widget implements PConstants {
       x = childLeft();
       y = childTop();
     }
-    intf.canvas.translate(x, y);
+    intf.app.translate(x, y);
   }
   
   
@@ -945,500 +945,500 @@ public class Widget implements PConstants {
   // should be sufficient for UI drawing.
   
   public void beginShape() {
-    intf.canvas.beginShape();
+    intf.app.beginShape();
   }
   
   public void beginShape(int kind) {
-    intf.canvas.beginShape(kind);
+    intf.app.beginShape(kind);
   }
   
   public void normal(float nx, float ny, float nz) {
-    intf.canvas.normal(nx, ny, nz);
+    intf.app.normal(nx, ny, nz);
   }
   
   public void textureMode(int mode) {
-    intf.canvas.textureMode(mode);
+    intf.app.textureMode(mode);
   }
   
   public void textureWrap(int wrap) {
-    intf.canvas.textureWrap(wrap);
+    intf.app.textureWrap(wrap);
   }
   
   public void texture(PImage image) {
-    intf.canvas.texture(image);
+    intf.app.texture(image);
   }
   
   public void noTexture() {
-    intf.canvas.noTexture();
+    intf.app.noTexture();
   }
   
   public void vertex(float x, float y) {
-    intf.canvas.vertex(x, y);
+    intf.app.vertex(x, y);
   }
 
   public void vertex(float x, float y, float z) {
-    intf.canvas.vertex(x, y, z);
+    intf.app.vertex(x, y, z);
   }
   
   public void vertex(float[] v) {
-    intf.canvas.vertex(v);
+    intf.app.vertex(v);
   }
 
   public void vertex(float x, float y, float u, float v) {
-    intf.canvas.vertex(x, y, u, v);
+    intf.app.vertex(x, y, u, v);
   }
   
   public void vertex(float x, float y, float z, float u, float v) {
-    intf.canvas.vertex(x, y, z, u, v);
+    intf.app.vertex(x, y, z, u, v);
   }
   
   public void beginContour() {
-    intf.canvas.beginContour();
+    intf.app.beginContour();
   }
   
   public void endContour() {
-    intf.canvas.endContour();
+    intf.app.endContour();
   }
 
   public void endShape() {
-    intf.canvas.endShape();
+    intf.app.endShape();
   }
   
   public void endShape(int mode) {
-    intf.canvas.endShape(mode);
+    intf.app.endShape(mode);
   } 
   
   public PShape createShape() {
-    return intf.canvas.createShape();
+    return intf.app.createShape();
   }
 
   public PShape createShape(PShape source) {
-    return intf.canvas.createShape(source);
+    return intf.app.createShape(source);
   } 
   
   public PShape createShape(int type) {
-    return intf.canvas.createShape(type);
+    return intf.app.createShape(type);
   }
   
   public PShape createShape(int kind, float... p) {
-    return intf.canvas.createShape(kind, p);
+    return intf.app.createShape(kind, p);
   }
   
   public void clip(float a, float b, float c, float d) {
-    intf.canvas.clip(a, b, c, d);
+    intf.app.clip(a, b, c, d);
   }
   
   public void noClip() {
-    intf.canvas.noClip();
+    intf.app.noClip();
   }
   
   public void blendMode(int mode) {
-    intf.canvas.blendMode(mode);
+    intf.app.blendMode(mode);
   }
   
   public void bezierVertex(float x2, float y2,
                            float x3, float y3,
                            float x4, float y4) {
-    intf.canvas.bezierVertex(x2, y2, x3, y3, x4, y4);
+    intf.app.bezierVertex(x2, y2, x3, y3, x4, y4);
   }  
   
   public void bezierVertex(float x2, float y2, float z2,
       float x3, float y3, float z3,
       float x4, float y4, float z4) {
-    intf.canvas.bezierVertex(x2, y2, z2, x3, y3, z3, x4, y4, z4);
+    intf.app.bezierVertex(x2, y2, z2, x3, y3, z3, x4, y4, z4);
   }
   
   public void quadraticVertex(float cx, float cy,
       float x3, float y3) {
-    intf.canvas.quadraticVertex(cx, cy, x3, y3);
+    intf.app.quadraticVertex(cx, cy, x3, y3);
   }
   
   public void quadraticVertex(float cx, float cy, float cz,
       float x3, float y3, float z3) {
-    intf.canvas.quadraticVertex(cx, cy, cz, x3, y3, z3);
+    intf.app.quadraticVertex(cx, cy, cz, x3, y3, z3);
   }
   
   public void curveVertex(float x, float y) {
-    intf.canvas.curveVertex(x, y);
+    intf.app.curveVertex(x, y);
   }
   
   public void curveVertex(float x, float y, float z) {
-    intf.canvas.curveVertex(x, y, z);
+    intf.app.curveVertex(x, y, z);
   }
  
   public void point(float x, float y) {
    
-    intf.canvas.point(x, y);
+    intf.app.point(x, y);
   }
   
   public void point(float x, float y, float z) {
-    intf.canvas.point(x, y, z);
+    intf.app.point(x, y, z);
   }
   
   public void line(float x1, float y1, float x2, float y2) {
-    intf.canvas.line(x1, y1, x2, y2);
+    intf.app.line(x1, y1, x2, y2);
   }
   
   public void line(float x1, float y1, float z1,
       float x2, float y2, float z2) {
-    intf.canvas.line(x1, y1, z1, x2, y2, z2);
+    intf.app.line(x1, y1, z1, x2, y2, z2);
   }
   
   public void triangle(float x1, float y1, float x2, float y2,
       float x3, float y3) {
-    intf.canvas.triangle(x1, y1, x2, y2, x3, y3);
+    intf.app.triangle(x1, y1, x2, y2, x3, y3);
   }
   
   public void quad(float x1, float y1, float x2, float y2,
       float x3, float y3, float x4, float y4) {
-    intf.canvas.quad(x1, y1, x2, y2, x3, y3, x4, y4);
+    intf.app.quad(x1, y1, x2, y2, x3, y3, x4, y4);
   }
   
   public void rectMode(int mode) {
-    intf.canvas.rectMode(mode);
+    intf.app.rectMode(mode);
   }
   
   public void rect(float a, float b, float c, float d) {
-    intf.canvas.rect(a, b, c, d);
+    intf.app.rect(a, b, c, d);
   }
   
   public void rect(float a, float b, float c, float d, float r) {
-    intf.canvas.rect(a, b, c, d, r);
+    intf.app.rect(a, b, c, d, r);
   }
   
   public void rect(float a, float b, float c, float d,
       float tl, float tr, float br, float bl) {
-    intf.canvas.rect(a, b, c, d, tl, tr, br, bl);
+    intf.app.rect(a, b, c, d, tl, tr, br, bl);
   }
   
   public void ellipseMode(int mode) {
-    intf.canvas.ellipseMode(mode);
+    intf.app.ellipseMode(mode);
   }
   
   public void ellipse(float a, float b, float c, float d) {
-    intf.canvas.ellipse(a, b, c, d);
+    intf.app.ellipse(a, b, c, d);
   }
   
   public void arc(float a, float b, float c, float d,
       float start, float stop) {
-    intf.canvas.arc(a, b, c, d, start, stop);
+    intf.app.arc(a, b, c, d, start, stop);
   }
   
   public void arc(float a, float b, float c, float d,
       float start, float stop, int mode) {
-    intf.canvas.arc(a, b, c, d, start, stop, mode);
+    intf.app.arc(a, b, c, d, start, stop, mode);
   }
   
   public void box(float size) {
-    intf.canvas.box(size);
+    intf.app.box(size);
   }
   
   public void box(float w, float h, float d) {
-    intf.canvas.box(w, h, d);
+    intf.app.box(w, h, d);
   }
  
   public void sphereDetail(int res) {
-    intf.canvas.sphereDetail(res);
+    intf.app.sphereDetail(res);
   }
   
   public void sphereDetail(int ures, int vres) {
-    intf.canvas.sphereDetail(ures, vres);
+    intf.app.sphereDetail(ures, vres);
   }
   
   public void sphere(float r) {
-    intf.canvas.sphere(r);
+    intf.app.sphere(r);
   }
  
   public float bezierPoint(float a, float b, float c, float d, float t) {
-    return intf.canvas.bezierPoint(a, b, c, d, t);
+    return intf.app.bezierPoint(a, b, c, d, t);
   }
   
   public float bezierTangent(float a, float b, float c, float d, float t) {
-    return intf.canvas.bezierTangent(a, b, c, d, t);
+    return intf.app.bezierTangent(a, b, c, d, t);
   }
   
   public void bezierDetail(int detail) {
-    intf.canvas.bezierDetail(detail);
+    intf.app.bezierDetail(detail);
   }
   
   public void bezier(float x1, float y1,
       float x2, float y2,
       float x3, float y3,
       float x4, float y4) {
-    intf.canvas.bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+    intf.app.bezier(x1, y1, x2, y2, x3, y3, x4, y4);
   }
   
   public void bezier(float x1, float y1, float z1,
       float x2, float y2, float z2,
       float x3, float y3, float z3,
       float x4, float y4, float z4) {
-    intf.canvas.bezier(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+    intf.app.bezier(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
   }
   
   public float curvePoint(float a, float b, float c, float d, float t) {
-    return intf.canvas.curvePoint(a, b, c, d, t);
+    return intf.app.curvePoint(a, b, c, d, t);
   }
   
   public float curveTangent(float a, float b, float c, float d, float t) {
-    return intf.canvas.curveTangent(a, b, c, d, t);
+    return intf.app.curveTangent(a, b, c, d, t);
   }
   
   public void curveDetail(int detail) {
-    intf.canvas.curveDetail(detail);
+    intf.app.curveDetail(detail);
   }
  
   public void curveTightness(float tightness) {
-    intf.canvas.curveTightness(tightness);
+    intf.app.curveTightness(tightness);
   }
   
   public void curve(float x1, float y1,
       float x2, float y2,
       float x3, float y3,
       float x4, float y4) {
-    intf.canvas.curve(x1, y1, x2, y2, x3, y3, x4, y4);
+    intf.app.curve(x1, y1, x2, y2, x3, y3, x4, y4);
   }
   
   public void curve(float x1, float y1, float z1,
       float x2, float y2, float z2,
       float x3, float y3, float z3,
       float x4, float y4, float z4) {
-    intf.canvas.curve(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+    intf.app.curve(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
   }
   
   public void imageMode(int mode) {
-    intf.canvas.imageMode(mode);
+    intf.app.imageMode(mode);
   }
   
   public void image(PImage img, float a, float b) {
-    intf.canvas.image(img, a, b);
+    intf.app.image(img, a, b);
   }
   
   public void image(PImage img, float a, float b, float c, float d) {
-    intf.canvas.image(img, a, b, c, d);
+    intf.app.image(img, a, b, c, d);
   }
   
   public void image(PImage img,
       float a, float b, float c, float d,
       int u1, int v1, int u2, int v2) {
-    intf.canvas.image(img, a, b, c, d, u1, v1, u2, v2);
+    intf.app.image(img, a, b, c, d, u1, v1, u2, v2);
   }
   
   public void shapeMode(int mode) {
-    intf.canvas.shapeMode(mode);
+    intf.app.shapeMode(mode);
   }
   
   public void shape(PShape shape) {
-    intf.canvas.shape(shape);
+    intf.app.shape(shape);
   }
   
   public void shape(PShape shape, float x, float y) {
-    intf.canvas.shape(shape, x, y);
+    intf.app.shape(shape, x, y);
   }
   
   public void shape(PShape shape, float a, float b, float c, float d) {
-    intf.canvas.shape(shape, a, b, c, d);
+    intf.app.shape(shape, a, b, c, d);
   }
   
   public void textAlign(int alignX) {
-    intf.canvas.textAlign(alignX);
+    intf.app.textAlign(alignX);
   }
   
   public void textAlign(int alignX, int alignY) {
-    intf.canvas.textAlign(alignX, alignY);
+    intf.app.textAlign(alignX, alignY);
   }
   
   public float textAscent() {
-    return intf.canvas.textAscent();
+    return intf.app.textAscent();
   }
   
   public float textDescent() {
-    return intf.canvas.textDescent();
+    return intf.app.textDescent();
   }
   
   public void textFont(PFont which) {
-    intf.canvas.textFont(which);
+    intf.app.textFont(which);
   }
   
   public void textFont(PFont which, float size) {
-    intf.canvas.textFont(which, size);
+    intf.app.textFont(which, size);
   }
   
   public void textLeading(float leading) {
-    intf.canvas.textLeading(leading);
+    intf.app.textLeading(leading);
   }
   
   public void textMode(int mode) {
-    intf.canvas.textMode(mode);
+    intf.app.textMode(mode);
   }
 
   public void textSize(float size) {
-    intf.canvas.textSize(size);
+    intf.app.textSize(size);
   }
 
   public float textWidth(char c) {
-    return intf.canvas.textWidth(c);
+    return intf.app.textWidth(c);
   }
 
   public float textWidth(String str) {
-    return intf.canvas.textWidth(str);
+    return intf.app.textWidth(str);
   }
 
   public float textWidth(char[] chars, int start, int length) {
-    return intf.canvas.textWidth(chars, start, length);
+    return intf.app.textWidth(chars, start, length);
   }
 
   public void text(char c, float x, float y) {
-    intf.canvas.text(c, x, y);
+    intf.app.text(c, x, y);
   }
 
   public void text(char c, float x, float y, float z) {
-    intf.canvas.text(c, x, y, z);
+    intf.app.text(c, x, y, z);
   }
 
   public void text(String str, float x, float y) {
-    intf.canvas.text(str, x, y);
+    intf.app.text(str, x, y);
   }
 
   public void text(char[] chars, int start, int stop, float x, float y) {
-    intf.canvas.text(chars, start, stop, x, y);
+    intf.app.text(chars, start, stop, x, y);
   }
 
   public void text(String str, float x, float y, float z) {
-    intf.canvas.text(str, x, y, z);
+    intf.app.text(str, x, y, z);
   }
 
   public void text(char[] chars, int start, int stop,
       float x, float y, float z) {
-    intf.canvas.text(chars, start, stop, x, y, z);
+    intf.app.text(chars, start, stop, x, y, z);
   }
 
   public void text(String str, float x1, float y1, float x2, float y2) {
-    intf.canvas.text(str, x1, y1, x2, y2);
+    intf.app.text(str, x1, y1, x2, y2);
   }
 
   public void text(int num, float x, float y) {
-    intf.canvas.text(num, x, y);
+    intf.app.text(num, x, y);
   }
 
   public void text(int num, float x, float y, float z) {
-    intf.canvas.text(num, x, y, z);
+    intf.app.text(num, x, y, z);
   }
 
   public void text(float num, float x, float y) {
-    intf.canvas.text(num, x, y);
+    intf.app.text(num, x, y);
   }
 
   public void text(float num, float x, float y, float z) {
-    intf.canvas.text(num, x, y, z);
+    intf.app.text(num, x, y, z);
   }
 
   public void pushMatrix() {
-    intf.canvas.pushMatrix();
+    intf.app.pushMatrix();
   }
 
   public void popMatrix() {
-    intf.canvas.popMatrix();
+    intf.app.popMatrix();
   }
 
   public void translate(float x, float y) {
-    intf.canvas.translate(x, y);
+    intf.app.translate(x, y);
   }
 
   public void translate(float x, float y, float z) {
-    intf.canvas.translate(x, y, z);
+    intf.app.translate(x, y, z);
   }
 
   public void rotate(float angle) {
-    intf.canvas.rotate(angle);
+    intf.app.rotate(angle);
   }
 
   public void rotateX(float angle) {
-    intf.canvas.rotateX(angle);
+    intf.app.rotateX(angle);
   }
 
   public void rotateY(float angle) {
-    intf.canvas.rotateY(angle);
+    intf.app.rotateY(angle);
   }
 
   public void rotateZ(float angle) {
-    intf.canvas.rotateZ(angle);
+    intf.app.rotateZ(angle);
   }
 
   public void rotate(float angle, float x, float y, float z) {
-    intf.canvas.rotate(angle, x, y, z);
+    intf.app.rotate(angle, x, y, z);
   }
 
   public void scale(float s) {
-    intf.canvas.scale(s);
+    intf.app.scale(s);
   }
 
   public void scale(float x, float y) {
-    intf.canvas.scale(x, y);
+    intf.app.scale(x, y);
   }
 
   public void scale(float x, float y, float z) {
-    intf.canvas.scale(x, y, z);
+    intf.app.scale(x, y, z);
   }
 
   public void shearX(float angle) {
-    intf.canvas.shearX(angle);
+    intf.app.shearX(angle);
   }
 
   public void shearY(float angle) {
-    intf.canvas.shearY(angle);
+    intf.app.shearY(angle);
   }
 
   public void resetMatrix() {
-    intf.canvas.resetMatrix();
+    intf.app.resetMatrix();
   }
 
   public void applyMatrix(PMatrix source) {
-    intf.canvas.applyMatrix(source);
+    intf.app.applyMatrix(source);
   }
 
   public void applyMatrix(PMatrix2D source) {
-    intf.canvas.applyMatrix(source);
+    intf.app.applyMatrix(source);
   }
 
   public void applyMatrix(float n00, float n01, float n02,
       float n10, float n11, float n12) {
-    intf.canvas.applyMatrix(n00, n01, n02, n10, n11, n12);
+    intf.app.applyMatrix(n00, n01, n02, n10, n11, n12);
   }
 
   public void applyMatrix(PMatrix3D source) {
-    intf.canvas.applyMatrix(source);
+    intf.app.applyMatrix(source);
   }
 
   public void applyMatrix(float n00, float n01, float n02, float n03,
       float n10, float n11, float n12, float n13,
       float n20, float n21, float n22, float n23,
       float n30, float n31, float n32, float n33) {
-    intf.canvas.applyMatrix(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
+    intf.app.applyMatrix(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
   }
 
 
   public PMatrix getMatrix() {
-    return intf.canvas.getMatrix();
+    return intf.app.getMatrix();
   }
 
   public PMatrix2D getMatrix(PMatrix2D target) {
-    return intf.canvas.getMatrix(target);
+    return intf.app.getMatrix(target);
   }
 
   public PMatrix3D getMatrix(PMatrix3D target) {
-    return intf.canvas.getMatrix(target);
+    return intf.app.getMatrix(target);
   }
 
   public void setMatrix(PMatrix source) {
-    intf.canvas.setMatrix(source);
+    intf.app.setMatrix(source);
   }
 
   public void setMatrix(PMatrix2D source) {
-    intf.canvas.setMatrix(source);
+    intf.app.setMatrix(source);
   }
 
   public void setMatrix(PMatrix3D source) {
-    intf.canvas.setMatrix(source);
+    intf.app.setMatrix(source);
   }
 
 //  public void beginCamera() {
@@ -1521,41 +1521,41 @@ public class Widget implements PConstants {
 //  }
 
   public void pushStyle() {
-    intf.canvas.pushStyle();
+    intf.app.pushStyle();
   }
 
   public void popStyle() {
-    intf.canvas.popStyle();
+    intf.app.popStyle();
   }
 
   public void style(PStyle s) {
-    intf.canvas.style(s);
+    intf.app.style(s);
   }
 
   public void strokeWeight(float weight) {
-    intf.canvas.strokeWeight(weight);
+    intf.app.strokeWeight(weight);
   }
 
   public void strokeJoin(int join) {
-    intf.canvas.strokeJoin(join);
+    intf.app.strokeJoin(join);
   }
 
   public void strokeCap(int cap) {
-    intf.canvas.strokeCap(cap);
+    intf.app.strokeCap(cap);
   }
 
   public void noStroke() {
-    intf.canvas.noStroke();
+    intf.app.noStroke();
   }
 
   public void stroke(int argb) {
     int maxAlpha = argb >> 24 & 0xFF;
-    intf.canvas.stroke(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));    
+    intf.app.stroke(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));    
   }
 
   public void stroke(int argb, int maxa) {
     int maxAlpha = PApplet.min(argb >> 24 & 0xFF, maxa);
-    intf.canvas.stroke(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));    
+    intf.app.stroke(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));    
   }  
 
 //  public void stroke(int rgb, float alpha) {
@@ -1579,17 +1579,17 @@ public class Widget implements PConstants {
 //  }
 
   public void noTint() {
-    intf.canvas.noTint();
+    intf.app.noTint();
   }
 
   public void tint(int argb) {
     int maxAlpha = argb >> 24 & 0xFF;
-    intf.canvas.tint(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
+    intf.app.tint(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
   }
 
   public void tint(int argb, int maxa) {
     int maxAlpha = PApplet.min(argb >> 24 & 0xFF, maxa);
-    intf.canvas.tint(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
+    intf.app.tint(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
   }  
   
 //  public void tint(int rgb, float alpha) {
@@ -1613,49 +1613,49 @@ public class Widget implements PConstants {
 //  }
 
   public void noFill() {
-    intf.canvas.noFill();
+    intf.app.noFill();
   }
 
   public void fill(int argb) {    
     int maxAlpha = argb >> 24 & 0xFF;
-    intf.canvas.fill(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
+    intf.app.fill(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
   }
   
   public void fill(int argb, int maxa) {
     int maxAlpha = PApplet.min(argb >> 24 & 0xFF, maxa);
-    intf.canvas.fill(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
+    intf.app.fill(argb >> 16 & 0xFF, argb >> 8 & 0xFF, argb & 0xFF, getAlpha(maxAlpha));
   }
   
   public int color(int gray) {
-    return intf.canvas.color(gray);
+    return intf.app.color(gray);
   }
 
   public int color(float fgray) {
-    return intf.canvas.color(fgray);
+    return intf.app.color(fgray);
   }
 
   public int color(int gray, int alpha) {
-    return intf.canvas.color(gray, alpha);
+    return intf.app.color(gray, alpha);
   }
 
   public int color(float fgray, float falpha) {
-    return intf.canvas.color(fgray, falpha);
+    return intf.app.color(fgray, falpha);
   }
 
   public int color(int v1, int v2, int v3) {
-    return intf.canvas.color(v1, v2, v3);
+    return intf.app.color(v1, v2, v3);
   }
 
   public int color(int v1, int v2, int v3, int alpha) {
-    return intf.canvas.color(v1, v2, v3, alpha);
+    return intf.app.color(v1, v2, v3, alpha);
   }
 
   public int color(float v1, float v2, float v3) {
-    return intf.canvas.color(v1, v2, v3);
+    return intf.app.color(v1, v2, v3);
   }
 
   public int color(float v1, float v2, float v3, float alpha) {
-    return intf.canvas.color(v1, v2, v3, alpha);
+    return intf.app.color(v1, v2, v3, alpha);
   }
 
   public int blendColor(int c1, int c2, int mode) {
@@ -1865,7 +1865,7 @@ public class Widget implements PConstants {
      
   public String chopStringRight(String str, float maxw) {
     String chopped = str;
-    float w = intf.canvas.textWidth(chopped);    
+    float w = intf.app.textWidth(chopped);    
     while (w > maxw - 10) {
       int n = chopped.length() - 4;
       if (-1 < n) {
@@ -1884,19 +1884,19 @@ public class Widget implements PConstants {
 //  }
 
   public float textLeading() {
-    return intf.canvas.textLeading;
+    return intf.app.g.textLeading;
   }
 
   public PFont textFont() {
-    return intf.canvas.textFont;
+    return intf.app.g.textFont;
   }
 
   public int fontSize() {
-    return intf.canvas.textFont.getSize();
+    return intf.app.g.textFont.getSize();
   } 
   
   public float[] textTopBottom(float y) {
-    return new float[] {y - intf.canvas.textAscent(), y + intf.canvas.textDescent()};
+    return new float[] {y - intf.app.textAscent(), y + intf.app.textDescent()};
   }
   
 //  public float[] textTopBottom(float y, PFont font) {
