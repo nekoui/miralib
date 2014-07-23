@@ -37,6 +37,12 @@ public class Interface implements PConstants {
   protected Widget selected;
   protected ArrayList<Widget> drawnWidgets;
   
+  protected int bckColor;
+  
+  protected boolean requestedRecord = false;
+  protected boolean recording = false;
+  protected String recFilename;  
+  
   protected int state;
  
   protected boolean usingKeymap;
@@ -73,7 +79,13 @@ public class Interface implements PConstants {
     if (cssfile != null && !cssfile.equals("")) {
       style = new Style(app.createInput(cssfile));
     }
+    
+    bckColor = 0xFFFFFFFF;
   }  
+  
+  public void setBackground(int color) {
+    bckColor = color;
+  }
   
   public PGraphics mainCanvas() {
     return app.g;
@@ -185,11 +197,12 @@ public class Interface implements PConstants {
       this.h = h;      
     }
     
-    void set() {      
+    void set() {
+      if (recording) return; // TODO: clipping doesn't work with PDF recording.
       if (equalsTo(0, 0, app.width, app.height)) {
-//        canvas.noClip();
+        app.noClip();
       } else {  
-//        canvas.clip(x, y, w, h);
+        app.clip(x, y, w, h);
       }
     }
     
@@ -238,12 +251,23 @@ public class Interface implements PConstants {
     state = IDLE;
   }
   
-  public void draw() {
+  public void draw() {    
+    if (requestedRecord) {
+      recording = true;
+      app.beginRecord(PDF, recFilename);
+    }
+    
+    app.background(bckColor);
     state = DRAW;
     clearDrawn();    
     root.drawChildren();
     state = IDLE;
-        
+    
+    if (recording) {
+      app.endRecord();
+      requestedRecord = false;
+    }
+            
     if (SHOW_DEBUG_INFO && app.frameCount % 180 == 0) {
       System.out.println("framerate: " + app.frameRate);      
       System.out.println("number of drawn widgets    : " + drawnWidgets.size());
@@ -267,6 +291,15 @@ public class Interface implements PConstants {
       // title bar of the window after a resize (on OSX)
       app.frame.setVisible(true);
     }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //  
+  // PDF output
+  
+  public void record(String filename) {
+    requestedRecord = true;
+    recFilename = filename; 
   }
   
   //////////////////////////////////////////////////////////////////////////////
