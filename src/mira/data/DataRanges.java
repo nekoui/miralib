@@ -3,7 +3,10 @@
 package mira.data;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.Map.Entry;
+
 import mira.utils.Log;
 
 /**
@@ -58,5 +61,26 @@ public class DataRanges extends HashMap<Variable, Range> {
       }
     }
     return change;      
+  }
+  
+  public String toString() {
+    Iterator<Entry<Variable, Range>> i = entrySet().iterator();
+    if (! i.hasNext())
+        return "{}";
+
+    StringBuilder sb = new StringBuilder();
+    sb.append('{');
+    for (;;) {
+        Entry<Variable, Range> e = i.next();
+        Variable var = e.getKey();
+        Range range = e.getValue();
+        sb.append(var.getName());
+        sb.append('=');
+        sb.append(var.formatRange(range, false));
+        if (! i.hasNext())
+            return sb.append('}').toString();
+        sb.append(',').append(' ');
+    }
+
   }
 }
