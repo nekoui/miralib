@@ -175,7 +175,7 @@ public class Histogram {
     return res;
   }
   
-  // Given the "unforming" bins defined by the array ubins, this function returns
+  // Given the "uniforming" bins defined by the array ubins, this function returns
   // a value x' that results of applying the "uniformization" transformation
   // on the value x. This transformation consists in choosing the value x'
   // that is inside the i-th ubin, where i is the equally-sized bin x belongs to.

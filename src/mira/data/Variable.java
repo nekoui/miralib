@@ -4,8 +4,11 @@ package mira.data;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import mira.shannon.Histogram;
 import mira.utils.Log;
+import processing.core.PApplet;
 import processing.data.Table;
 import processing.data.TableRow;
 
@@ -16,12 +19,16 @@ import processing.data.TableRow;
  */
 
 abstract public class Variable implements DataTree.Item {
-  protected String name;  
+  final static public int UNDEFINED   = 0;
+  final static public int LINEAR      = 1;
+  final static public int EXPONENTIAL = 2;
+  
+  protected String name;
   protected String alias;  
   protected int index;
   protected Range range;
   protected float missing;
-
+  
   protected boolean weight;
   protected boolean subsample;
   protected Variable weightVar;
@@ -89,6 +96,30 @@ abstract public class Variable implements DataTree.Item {
     }
   }
   
+  public int getScaling(DataSlice1D slice) {
+    int scaling = LINEAR;
+    int bcount = Histogram.optBinCount(slice);
+    if (bcount <= 0) return UNDEFINED;
+    
+    float bsize = 1.0f / bcount;
+    double[] weightSum = new double[bcount];
+    Arrays.fill(weightSum, 0);
+    double totWeight = 0;
+    for (Value1D value: slice.values) {      
+      int bin = PApplet.constrain((int)(value.x / bsize), 0, bcount - 1);      
+      weightSum[bin] += value.w;
+      totWeight += value.w;
+    }
+    for (int bin = 0; bin < bcount; bin++) {
+      if (weightSum[bin] / totWeight > 0.9) {
+        scaling = EXPONENTIAL;
+        break;
+      }
+    } 
+
+    return scaling;
+  }
+
   abstract public void initValues(String valstr);
   
   public int getItemType() {
