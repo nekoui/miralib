@@ -85,6 +85,10 @@ public class NumericalVariable extends Variable {
     return false;
   }
   
+  public boolean string() {
+    return false;
+  }  
+  
   public boolean missing(TableRow row) {
     boolean miss = true;
     if (type == Table.INT) {

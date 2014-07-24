@@ -66,7 +66,9 @@ abstract public class Variable implements DataTree.Item {
   
   static public Variable create(int index, String name, int type) {
     Variable var = null;
-    if (type == Table.INT) {
+    if (type == Table.STRING) {
+      var = new StringVariable(name, index);
+    } else if (type == Table.INT) {
       var = new NumericalVariable(name, index, Table.INT);
     } else if (type == Table.LONG) {
       var = new NumericalVariable(name, index, Table.LONG);
@@ -200,6 +202,7 @@ abstract public class Variable implements DataTree.Item {
   abstract public boolean discrete();
   abstract public boolean numerical();
   abstract public boolean categorical();
+  abstract public boolean string();
   
   public long getCount() {
     return range.getCount();

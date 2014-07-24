@@ -691,6 +691,12 @@ public class DataSet {
                           "is not found in the data");
               continue;
             }
+            if (var.string()) {
+              // Skipping variable not present in the dataset.
+              Log.message("Variable "+ varName + " is not included because it is string");
+              continue;
+              
+            }
             varCount++;
             var.include = true;
             tree.addVariable(var);
