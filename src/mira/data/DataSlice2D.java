@@ -147,6 +147,8 @@ public class DataSlice2D {
     for (Value2D val: values) {
       slice.add(val.x, val.w);
     }
+    slice.setCount(countx);
+    slice.setMissing(missing);
     return slice;
   }
   
@@ -155,6 +157,8 @@ public class DataSlice2D {
     for (Value2D val: values) {
       slice.add(val.y, val.w);
     }
+    slice.setCount(county);
+    slice.setMissing(missing);
     return slice;
   }  
   
