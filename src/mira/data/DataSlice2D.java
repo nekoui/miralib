@@ -36,6 +36,11 @@ public class DataSlice2D {
   }
   
   public DataSlice2D(Table data, Variable varx, Variable vary, DataRanges ranges) {
+    this(data, varx, vary, ranges, null);
+  }
+  
+  public DataSlice2D(Table data, Variable varx, Variable vary, 
+                     DataRanges ranges, Variable varl) {
     this.varx = varx;
     this.vary = vary;
     this.values = new ArrayList<Value2D>();
@@ -44,7 +49,7 @@ public class DataSlice2D {
     // has been constructed.    
     this.ranges = new DataRanges(ranges);
     
-    init(data);    
+    init(data, varl);    
   }  
   
   public DataSlice2D shuffle() {
@@ -123,8 +128,10 @@ public class DataSlice2D {
     values.add(value);
   }
 
-  public void add(double x, double y, double w) {
-    values.add(new Value2D(x, y, w));
+  public Value2D add(double x, double y, double w) {
+    Value2D value = new Value2D(x, y, w);
+    values.add(value);
+    return value;
   }  
   
   public void setMissing(float missing) {
@@ -192,7 +199,7 @@ public class DataSlice2D {
     return res;
   }
   
-  protected void init(Table data) {
+  protected void init(Table data, Variable varl) {
     int ntot = 0;
     int nmis = 0;    
     double wsum = 0;  
@@ -209,8 +216,12 @@ public class DataSlice2D {
       if (valx < 0 || valy < 0 || w < 0) {
         nmis++;
         continue;
-      }      
-      add(valx, valy, w);
+      }
+      Value2D val = add(valx, valy, w);
+      if (varl != null && val != null) {
+        val.label = varl.formatValue(row);
+        System.err.println(val.label);        
+      }
       wsum += w;
     }
     long countx = varx.getCount(ranges);

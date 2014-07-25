@@ -12,11 +12,12 @@ import lib.math.Numbers;
 public class Value2D {
   public double x, y;
   public double w;
+  public String label;
 
   public Value2D(double x, double y) {
     this.x = x;
     this.y = y;
-    this.w = 1;    
+    this.w = 1; 
   }
   
   public Value2D(double x, double y, double w) {

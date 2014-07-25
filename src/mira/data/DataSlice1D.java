@@ -33,6 +33,11 @@ public class DataSlice1D {
   }
   
   public DataSlice1D(Table data, Variable varx, DataRanges ranges) {
+    this(data, varx, ranges, null);
+  }
+  
+  public DataSlice1D(Table data, Variable varx, DataRanges ranges, 
+                     Variable varl) {
     this.varx = varx;
     this.values = new ArrayList<Value1D>();
     
@@ -40,7 +45,7 @@ public class DataSlice1D {
     // has been constructed    
     this.ranges = new DataRanges(ranges);
     
-    init(data);
+    init(data, varl);
   } 
   
   public void dispose() {
@@ -51,8 +56,10 @@ public class DataSlice1D {
     values.add(value);
   }
 
-  public void add(double x, double w) {
-    values.add(new Value1D(x, w));
+  public Value1D add(double x, double w) {
+    Value1D value = new Value1D(x, w);
+    values.add(value);
+    return value;
   } 
   
   public void setMissing(float missing) {
@@ -84,7 +91,7 @@ public class DataSlice1D {
     return res;
   }
   
-  protected void init(Table data) {
+  protected void init(Table data, Variable varl) {
     int ntot = 0;
     int nmis = 0;
     double wsum = 0;
@@ -100,8 +107,12 @@ public class DataSlice1D {
       if (valx < 0 || w < 0) {
         nmis++;
         continue;
-      }
-      add(valx, w);      
+      }      
+      Value1D val = add(valx, w);  
+      if (varl != null && val != null) {
+        val.label = varl.formatValue(row);
+        System.err.println(val.label);        
+      }      
       wsum += w;
     }
     long countx = varx.getCount(ranges);
