@@ -45,7 +45,9 @@ public class DataSet {
   protected ArrayList<Variable> columns;  
   protected ArrayList<Float> scores;
   protected ArrayList<Boolean> selected;
-
+  
+  protected Variable labelVar;
+  
   protected Variable sortVar;
   protected DataRanges sortRanges;
   protected float sortPValue;
@@ -386,11 +388,11 @@ public class DataSet {
   }
   
   public DataSlice1D getSlice(Variable varx, DataRanges ranges) {
-    return new DataSlice1D(data, varx, ranges);   
+    return new DataSlice1D(data, varx, ranges, labelVar);   
   }
   
   public DataSlice2D getSlice(Variable varx, Variable vary, DataRanges ranges) {
-    return new DataSlice2D(data, varx, vary, ranges);
+    return new DataSlice2D(data, varx, vary, ranges, labelVar);
   }  
   
   public void sort(Variable var, DataRanges ranges, float pvalue, float misst) {
@@ -589,6 +591,7 @@ public class DataSet {
         boolean tab = val0.equals("code") && val1.equals("description");
         boolean alias = val0.equals("alias");
         boolean weight = val0.equals("weight");
+        boolean label = val0.equals("label");
         boolean title = !sep && !tab && !alias && !readingRanges;
         
         if (sep) {
@@ -602,6 +605,8 @@ public class DataSet {
           page.alias = val1;
         } else if (weight) {
           page.weight = val1;
+        } else if (label) {
+          page.label = true;
         } else if (tab) {
           readingRanges = true;
         } else if (readingRanges) {
@@ -642,7 +647,7 @@ public class DataSet {
     }
     
     Variable.setMissingString(project.missingString);
-    allvars = new ArrayList<Variable>();        
+    allvars = new ArrayList<Variable>();  
     for (int col = 0; col < data.getColumnCount(); col++) {
       String name = data.getColumnTitle(col);
       int type = data.getColumnType(col);
@@ -691,6 +696,12 @@ public class DataSet {
                           "is not found in the data");
               continue;
             }
+            if (var.string()) {
+              // Skipping variable not present in the dataset.
+              Log.message("Variable "+ varName + " is not included because it is string");
+              continue;
+              
+            }
             varCount++;
             var.include = true;
             tree.addVariable(var);
@@ -717,13 +728,21 @@ public class DataSet {
         String alias = row.getString(0);
         var.setAlias(alias);
         if (2 < count) {
-          // Getting range string
-          String range = row.getString(2);
-          var.initValues(range);
-          if (3 < count) {            
-            // Getting weighting information
-            String weight = row.getString(3);
-            initWeight(var, weight);
+          if (var.string()) {
+            String str = row.getString(2);
+            if (str != null && str.equals("label")) {
+              Log.message("Set variable " + var.getName() + " as label");
+              labelVar = var;              
+            }
+          } else {
+            // Getting range string
+            String range = row.getString(2);
+            var.initValues(range);
+            if (3 < count) {            
+              // Getting weighting information
+              String weight = row.getString(3);
+              initWeight(var, weight);
+            }            
           }
         }
       }
@@ -734,8 +753,15 @@ public class DataSet {
       if (var != null) {
         CodebookPage pg = codebook.get(name);
         if (pg.hasAlias()) var.setAlias(pg.alias);
-        if (pg.hasRange()) var.initValues(pg.range);
-        if (pg.hasWeight()) initWeight(var, pg.weight);
+        if (var.string()) {
+          if (pg.isLabel()) {
+            Log.message("Set variable " + var.getName() + " as label");
+            labelVar = var;
+          }
+        } else {
+          if (pg.hasRange()) var.initValues(pg.range);
+          if (pg.hasWeight()) initWeight(var, pg.weight);          
+        }
       }
     } 
   }
@@ -1122,6 +1148,7 @@ public class DataSet {
     int type;
     String range;
     String weight;
+    boolean label;
     
     CodebookPage(String name, int type) {
       this.name = name;
@@ -1141,6 +1168,10 @@ public class DataSet {
     
     boolean hasWeight() {
       return !weight.equals("");
+    }
+    
+    boolean isLabel() {
+      return label;
     }
     
     void setRange(String range) {

@@ -72,6 +72,10 @@ public class CategoricalVariable extends Variable {
     return true;
   }
    
+  public boolean string() {
+    return false;
+  }
+  
   public boolean missing(TableRow row) {
     String value = row.getString(index);
     return value == null || value.equals(missingString);

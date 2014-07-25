@@ -12,6 +12,7 @@ import lib.math.Numbers;
 public class Value1D {
   public double x;
   public double w;
+  public String label;
   
   public Value1D(double x) {
     this.x = x;
