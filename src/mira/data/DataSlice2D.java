@@ -219,8 +219,7 @@ public class DataSlice2D {
       }
       Value2D val = add(valx, valy, w);
       if (varl != null && val != null) {
-        val.label = varl.formatValue(row);
-        System.err.println(val.label);        
+        val.label = varl.formatValue(row);        
       }
       wsum += w;
     }

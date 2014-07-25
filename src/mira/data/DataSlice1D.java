@@ -110,8 +110,7 @@ public class DataSlice1D {
       }      
       Value1D val = add(valx, w);  
       if (varl != null && val != null) {
-        val.label = varl.formatValue(row);
-        System.err.println(val.label);        
+        val.label = varl.formatValue(row);        
       }      
       wsum += w;
     }
