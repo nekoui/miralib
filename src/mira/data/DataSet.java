@@ -649,8 +649,12 @@ public class DataSet {
     Variable.setMissingString(project.missingString);
     allvars = new ArrayList<Variable>();  
     for (int col = 0; col < data.getColumnCount(); col++) {
-      String name = data.getColumnTitle(col);
+      String name = data.getColumnTitle(col);      
       int type = data.getColumnType(col);
+      if (name == null || name.equals("")) {
+        Log.warning("Variable " + col + " in the data has empty name, will ignore it");
+        continue;
+      }
       Variable var = Variable.create(col, name, type);
       allvars.add(var);
     }
@@ -1023,8 +1027,11 @@ public class DataSet {
       
       // obtaining types from codebook, or trying to guess from data...
       for (int i = 0; i < table.getColumnCount(); i++) {
-        CodebookPage pg = codebook.get(table.getColumnTitle(i));
+        String name = table.getColumnTitle(i);
+        if (name == null || name.equals("")) continue;
+        CodebookPage pg = codebook.get(name);
         if (pg == null) {
+          System.err.println(i + " " + table.getColumnTitle(i));
           int guess = guessColumnType(table, i, missing);
           table.setColumnType(i, guess);
         } else {
