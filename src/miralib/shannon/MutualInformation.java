@@ -13,7 +13,7 @@ import miralib.data.Value2D;
 
 public class MutualInformation {
   static public float calculate(DataSlice2D slice) {
-    int[] nbins = Histogram.optBinCount(slice);
+    int[] nbins = BinOptimizer.calculate(slice);
     return calculate(slice, nbins[0], nbins[1]);    
   }
   

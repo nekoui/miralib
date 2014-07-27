@@ -18,7 +18,7 @@ import processing.core.PApplet;
  *
  */
 
-public class Histogram {
+public class BinOptimizer {
   static final int MAX_BIN_COUNT       = 0;
   static final int SIMULATED_ANNEALING = 1;
   
@@ -29,7 +29,7 @@ public class Histogram {
   static int MAX_HIST_SAMPLE_SIZE = 10000;
   static boolean PRINT_ERRORS = false;
   
-  static public int optBinCount(DataSlice1D slice) {
+  static public int calculate(DataSlice1D slice) {
     if (slice.varx.categorical()) return (int)slice.countx;
       
     int hsize = slice.values.size() / 2;
@@ -88,7 +88,7 @@ public class Histogram {
     }
   }
 
-  static public int[] optBinCount(DataSlice2D slice) {
+  static public int[] calculate(DataSlice2D slice) {
     if (slice.varx.categorical() && slice.vary.categorical()) {
       return new int[] {(int)slice.countx, (int)slice.county};
     }

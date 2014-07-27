@@ -6,7 +6,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import miralib.shannon.Histogram;
+import miralib.shannon.BinOptimizer;
 import miralib.utils.Log;
 import processing.core.PApplet;
 import processing.data.Table;
@@ -100,7 +100,7 @@ abstract public class Variable implements DataTree.Item {
   
   public int getScaling(DataSlice1D slice) {
     int scaling = LINEAR;
-    int bcount = Histogram.optBinCount(slice);
+    int bcount = BinOptimizer.calculate(slice);
     if (bcount <= 0) return UNDEFINED;
     
     float bsize = 1.0f / bcount;

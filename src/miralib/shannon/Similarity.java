@@ -51,7 +51,7 @@ public class Similarity {
 //    DataSlice1D slicex = slice.getSliceX();
 //    DataSlice1D slicey = slice.getSliceY();
     
-    int[] res = Histogram.optBinCount(slice);
+    int[] res = BinOptimizer.calculate(slice);
     int binx = res[0];
     int biny = res[1]; 
     
@@ -101,7 +101,7 @@ public class Similarity {
     for (int i = 0; i < scount; i++) {
       DataSlice2D surrogate = slice.shuffle();          
       if (i == 0) {
-        int[] sres = Histogram.optBinCount(surrogate);
+        int[] sres = BinOptimizer.calculate(surrogate);
         sbinx = sres[0];
         sbiny = sres[1];
       }
@@ -129,7 +129,7 @@ public class Similarity {
     for (int i = 0; i < numSurr; i++) {          
       DataSlice2D surrogate = slice.shuffle();
       if (i == 0) {
-        int[] sres = Histogram.optBinCount(surrogate);
+        int[] sres = BinOptimizer.calculate(surrogate);
         sbinx = sres[0];
         sbiny = sres[1];
       }

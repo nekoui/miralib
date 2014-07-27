@@ -13,7 +13,7 @@ import processing.core.PApplet;
 
 public class MarginalEntropy {
   static public float calculate(DataSlice1D slice) {
-    int nbin = Histogram.optBinCount(slice);
+    int nbin = BinOptimizer.calculate(slice);
     return calculate(slice, nbin);
   }
   

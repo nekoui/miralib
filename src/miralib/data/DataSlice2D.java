@@ -8,7 +8,7 @@ import java.util.Collections;
 import processing.data.Table;
 import processing.data.TableRow;
 import miralib.math.Numbers;
-import miralib.shannon.Histogram;
+import miralib.shannon.BinOptimizer;
 
 /**
  * 2-dimensional data slice, i.e.: all the (normalized) data value pairs for two 
@@ -78,13 +78,13 @@ public class DataSlice2D {
       valuesx.add(new Value1D(val.x, val.w));
       valuesy.add(new Value1D(val.y, val.w));
     }    
-    float[] ubinsx = Histogram.uniformBins1D(valuesx, binx);
-    float[] ubinsy = Histogram.uniformBins1D(valuesy, biny);
+    float[] ubinsx = BinOptimizer.uniformBins1D(valuesx, binx);
+    float[] ubinsy = BinOptimizer.uniformBins1D(valuesy, biny);
     
     DataSlice2D uniform = new DataSlice2D(varx, vary, ranges);
     for (Value2D value: values) {
-      double ux = Histogram.uniformTransform1D(value.x, ubinsx);
-      double uy = Histogram.uniformTransform1D(value.y, ubinsy);
+      double ux = BinOptimizer.uniformTransform1D(value.x, ubinsx);
+      double uy = BinOptimizer.uniformTransform1D(value.y, ubinsy);
       uniform.add(ux, uy, value.w); 
     }    
     
