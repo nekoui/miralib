@@ -76,21 +76,6 @@ public class DataSlice1D {
     }
   }  
   
-  public double resx() {
-    double res = Double.POSITIVE_INFINITY; 
-    for (int i = 0; i < values.size(); i++) {
-      Value1D vali = values.get(i);
-      for (int j = i + 1; j < values.size(); j++) {
-        Value1D valj = values.get(j); 
-        double diff = Math.abs(valj.x - vali.x);
-        if (0 < diff) {
-          res = Math.min(res, diff);
-        }
-      }
-    }
-    return res;
-  }
-  
   protected void init(Table data, Variable varl) {
     int ntot = 0;
     int nmis = 0;

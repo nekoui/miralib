@@ -169,36 +169,6 @@ public class DataSlice2D {
     return slice;
   }  
   
-  public double resx() {
-    double res = Double.POSITIVE_INFINITY; 
-    for (int i = 0; i < values.size(); i++) {
-      Value2D vali = values.get(i);
-      for (int j = i + 1; j < values.size(); j++) {
-        Value2D valj = values.get(j); 
-        double diff = Math.abs(valj.x - vali.x);
-        if (0 < diff) {
-          res = Math.min(res, diff);
-        }
-      }
-    }
-    return res;
-  }  
-  
-  public double resy() {
-    double res = Double.POSITIVE_INFINITY; 
-    for (int i = 0; i < values.size(); i++) {
-      Value2D vali = values.get(i);
-      for (int j = i + 1; j < values.size(); j++) {
-        Value2D valj = values.get(j); 
-        double diff = Math.abs(valj.y - vali.y);
-        if (0 < diff) {
-          res = Math.min(res, diff);
-        }
-      }
-    }
-    return res;
-  }
-  
   protected void init(Table data, Variable varl) {
     int ntot = 0;
     int nmis = 0;    

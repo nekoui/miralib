@@ -6,7 +6,7 @@ import processing.data.Table;
 import processing.data.TableRow;
 
 /**
- * String variable.
+ * String variable, not used in calculations but can be used to generate labels.
  *
  */
 

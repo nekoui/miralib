@@ -4,8 +4,6 @@ package mira.shannon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import lib.math.IndexedValue;
 import mira.data.DataSlice1D;
 import mira.data.DataSlice2D;
 import mira.data.Value1D;
@@ -20,6 +18,14 @@ import processing.core.PApplet;
  */
 
 public class Histogram {
+  static final int MAX_BIN_COUNT       = 0;
+  static final int SIMULATED_ANNEALING = 1;
+  
+  static int EXHAUSTIVE_SERCH_SIZE = 1000;
+  static int MINIMZATION_METHOD = MAX_BIN_COUNT; 
+  static int MAX_HIST_BINS = 1000;
+  static int MAX_RES_SAMPLE_SIZE = 10;
+  static int MAX_HIST_SAMPLE_SIZE = 10000;
   static boolean PRINT_ERRORS = false;
   
   static public int optBinCount(DataSlice1D slice) {
@@ -34,10 +40,9 @@ public class Histogram {
       minNBins = 2;
       long lcount = slice.countx;
       int icount = Integer.MAX_VALUE < lcount ? Integer.MAX_VALUE : (int)lcount;
-      float res = (float)slice.resx();
+      float res = (float)res(slice.values);
       maxNBins = PApplet.min((int)(1.0f/res) + 1, icount, hsize);
     }
-    
     int numValues = maxNBins - minNBins + 1;
     if (minNBins <= 0 || maxNBins <= 0 || numValues <= 0) {
       if (PRINT_ERRORS) {
@@ -46,29 +51,39 @@ public class Histogram {
       }
       return 1;
     }
-    IndexedValue[] cost = new IndexedValue[numValues];
-    for (int n = minNBins; n <= maxNBins; n++) {
-      float bsize = 1.0f / n; 
-      double[] counts = hist1D(slice.values, n);
+    if (numValues <= EXHAUSTIVE_SERCH_SIZE) {
+      IndexedValue[] cost = new IndexedValue[numValues];
+      for (int n = minNBins; n <= maxNBins; n++) {
+        float bsize = 1.0f / n; 
+        double[] counts = hist1D(slice.values, n);
 
-      double k = countsMean(counts);    
-      double v = countsDev(counts, k);
+//        double k = countsMean(counts);    
+//        double v = countsDev(counts, k);
+        double[] res = countsMeanDev(counts);
+        double k = res[0];
+        double v = res[1];      
 
-      float c = (float)((2 * k - v) / (bsize * bsize));
-      cost[n - minNBins] = new IndexedValue(c, n, false);
-    }
-    Arrays.sort(cost);
-    if (cost[0] != null) {
-      int n = cost[0].index;
-      return n;
-    } else {
-      if (PRINT_ERRORS) {
-        Log.message("Unexpected error cost array has null 0th element after sorting. Bin limits: " + 
-                    "[" + minNBins + ", " + maxNBins + "]");
-        Log.message("Cost array:");
-        Log.message(cost.toString());
+        float c = (float)((2 * k - v) / (bsize * bsize));
+        cost[n - minNBins] = new IndexedValue(c, n, false);
       }
-      return (minNBins + maxNBins)/2;
+      Arrays.sort(cost);
+      if (cost[0] != null) {
+        int n = cost[0].index;
+        return n;
+      } else {
+        if (PRINT_ERRORS) {
+          Log.message("Unexpected error cost array has null 0th element after sorting. Bin limits: " + 
+                      "[" + minNBins + ", " + maxNBins + "]");
+          Log.message("Cost array:");
+          Log.message(cost.toString());
+        }
+        return (minNBins + maxNBins)/2;
+      }      
+    } else {
+      if (MINIMZATION_METHOD == SIMULATED_ANNEALING) {
+        // TODO: implement this!  
+      }
+      return maxNBins;
     }
   }
 
@@ -88,7 +103,7 @@ public class Histogram {
       minNBins0 = 2;
       long lcount = slice.countx;
       int icount = Integer.MAX_VALUE < lcount ? Integer.MAX_VALUE : (int)lcount;
-      float res = (float)slice.resx();   
+      float res = (float)resx(slice.values);   
       maxNBins0 = PApplet.min((int)(1.0f/res) + 1, icount, sqsize);
     }
     
@@ -101,7 +116,7 @@ public class Histogram {
       minNBins1 = 2;
       long lcount = slice.county;
       int icount = Integer.MAX_VALUE < lcount ? Integer.MAX_VALUE : (int)lcount;
-      float res = (float)slice.resy();            
+      float res = (float)resy(slice.values);            
       maxNBins1 = PApplet.min((int)(1.0f/res) + 1, icount, sqsize);
     }
     
@@ -118,43 +133,55 @@ public class Histogram {
       }
       return new int[] {1, 1};
     }
-    IndexedValue[] cost = new IndexedValue[numValues];
-    for (int n0 = minNBins0; n0 <= maxNBins0; n0++) {
-      for (int n1 = minNBins1; n1 <= maxNBins1; n1++) {
-        float bsize0 = 1.0f / n0; 
-        float bsize1 = 1.0f / n1;     
-        float barea = bsize0 * bsize1;
-        double[][] counts = hist2D(slice.values, n0, n1);
+    
+    if (numValues <= EXHAUSTIVE_SERCH_SIZE) {
+      IndexedValue[] cost = new IndexedValue[numValues];
+      //    String[] values = new String[numValues];
+      for (int n0 = minNBins0; n0 <= maxNBins0; n0++) {
+        for (int n1 = minNBins1; n1 <= maxNBins1; n1++) {
+          float bsize0 = 1.0f / n0; 
+          float bsize1 = 1.0f / n1;     
+          float barea = bsize0 * bsize1;
+          double[][] counts = hist2D(slice.values, n0, n1);
 
-        double k = countsMean(counts);    
-        double v = countsDev(counts, k);    
-        float c = (float)((2 * k - v) / (barea * barea));
-        
-        int n = (n0 - minNBins0) * blen1 + (n1 - minNBins1);        
-        cost[n] = new IndexedValue(c, n, false);
+          //        double k = countsMean(counts);    
+          //        double v = countsDev(counts, k);        
+          double[] res = countsMeanDev(counts);
+          double k = res[0];
+          double v = res[1];
+
+          float c = (float)((2 * k - v) / (barea * barea));
+
+          int n = (n0 - minNBins0) * blen1 + (n1 - minNBins1);        
+          cost[n] = new IndexedValue(c, n, false);
+          //        values[n] = "" + c;
+        }
       }
-    }
-    Arrays.sort(cost);
-    if (cost[0] != null) {
-      int n = cost[0].index;    
-      int n0 = n / blen1 + minNBins0;
-      int n1 = n % blen1 + minNBins1;
-      
-//      if (var0.isCategorical())
-//      System.out.println("X: " + minNBins0 + " " + maxNBins0 + ": " + n0);
-//      System.out.println("Y: " + minNBins1 + " " + maxNBins1 + ": " + n1);
-      
-      return new int[] {n0, n1};
+      //    PApplet.saveStrings(new File("./values"), values);
+      //    System.exit(0);    
+      Arrays.sort(cost);
+      if (cost[0] != null) {
+        int n = cost[0].index;    
+        int n0 = n / blen1 + minNBins0;
+        int n1 = n % blen1 + minNBins1;      
+        System.err.println(maxNBins0 + " " + maxNBins1 + " | " + n0 + " " + n1);
+        return new int[] {n0, n1};
+      } else {
+        if (PRINT_ERRORS) {
+          Log.message("Unexpected error cost array has null 0th element after sorting. Bin limits: " + 
+              "[" + minNBins0 + ", " + maxNBins0 + "] x " + 
+              "[" + minNBins1 + ", " + maxNBins1 + "]");
+          Log.message("Cost array:");
+          Log.message(cost.toString());
+        }
+        return new int[] {(minNBins0 + maxNBins0)/2, (minNBins1 + maxNBins1)/2};
+      }
     } else {
-      if (PRINT_ERRORS) {
-        Log.message("Unexpected error cost array has null 0th element after sorting. Bin limits: " + 
-                    "[" + minNBins0 + ", " + maxNBins0 + "] x " + 
-                    "[" + minNBins1 + ", " + maxNBins1 + "]");
-        Log.message("Cost array:");
-        Log.message(cost.toString());
+      if (MINIMZATION_METHOD == SIMULATED_ANNEALING) {
+        // TODO: implement this!  
       }
-      return new int[] {(minNBins0 + maxNBins0)/2, (minNBins1 + maxNBins1)/2};
-    }
+      return new int[] {maxNBins0, maxNBins1};      
+    }    
   } 
   
   // Converts the 1D histogram defined by the equally-sized numBins bins, into
@@ -186,10 +213,13 @@ public class Histogram {
     return ubins[bin] + Math.random() * (ubins[bin + 1] - ubins[bin]); 
   }
 
-  static public double[] hist1D(ArrayList<Value1D> values, int bnum) {
+  static public double[] hist1D(ArrayList<Value1D> values, int bnum) {    
     double[] counts = new double[bnum];
     float bsize = 1.0f / bnum;
-    for (Value1D value: values) { 
+//    for (Value1D value: values) {
+    int mod = PApplet.max(1, values.size() / MAX_HIST_SAMPLE_SIZE);
+    for (int i = 0; i < values.size(); i += mod) {
+      Value1D value = values.get(i);
       int bin = PApplet.constrain((int)(value.x / bsize), 0, bnum - 1);
       counts[bin] += value.w;
     }
@@ -201,7 +231,10 @@ public class Histogram {
     double[][] counts = new double[bnumx][bnumy];
     float bsizex = 1.0f / bnumx; 
     float bsizey = 1.0f / bnumy; 
-    for (Value2D value: values) { 
+//    for (Value2D value: values) {
+    int mod = PApplet.max(1, values.size() / MAX_HIST_SAMPLE_SIZE);
+    for (int i = 0; i < values.size(); i += mod) {
+      Value2D value = values.get(i);
       int binx = PApplet.constrain((int)(value.x / bsizex), 0, bnumx - 1);
       int biny = PApplet.constrain((int)(value.y / bsizey), 0, bnumy - 1);    
       counts[binx][biny] += value.w;
@@ -209,45 +242,301 @@ public class Histogram {
     return counts; 
   }
 
-  static protected double countsMean(double[] counts) {
-    int n = counts.length;
-    double sum = 0;  
-    for (int i = 0; i < n; i++) {
-      sum += counts[i];   
+//  static protected double countsMean(double[] counts) {
+//    int n = counts.length;
+//    double sum = 0;  
+//    for (int i = 0; i < n; i++) {
+//      sum += counts[i];   
+//    }
+//    return sum / n;  
+//  }
+//
+//  static protected double countsDev(double[] counts, double mean) {
+//    int n = counts.length;
+//    double sum = 0;  
+//    for (int i = 0; i < n; i++) {
+//      sum += (counts[i] - mean) * (counts[i] - mean);
+//    }
+//    return sum / n;  
+//  }
+  
+  static protected double res(ArrayList<Value1D> values) {
+    double res = Double.POSITIVE_INFINITY;
+    int mod = PApplet.max(1, values.size() / MAX_RES_SAMPLE_SIZE);
+    for (int i = 0; i < values.size(); i += mod) {
+      Value1D vali = values.get(i);
+      for (int j = 0; j < values.size(); j++) {
+        Value1D valj = values.get(j);
+        double diff = Math.abs(valj.x - vali.x);
+        if (0 < diff) {
+          res = Math.min(res, diff);
+        }        
+      }
+    }    
+    return Math.max(res, 1.0d / MAX_HIST_BINS);
+    
+//  double res = Double.POSITIVE_INFINITY; 
+//  for (int i = 0; i < values.size(); i++) {
+//    Value1D vali = values.get(i);
+//    for (int j = i + 1; j < values.size(); j++) {
+//      Value1D valj = values.get(j); 
+//      double diff = Math.abs(valj.x - vali.x);
+//      if (0 < diff) {
+//        res = Math.min(res, diff);
+//      }
+//    }
+//  }
+//  return res;
+  
+  /*
+  if (0 < values.size()) {
+    // Calculate the mean, and then find the smallest, non-zero distance with 
+    // all values.
+    double mean = 0;
+    for (int i = 0; i < values.size(); i++) {
+      mean += values.get(i).x;   
     }
-    return sum / n;  
-  }
-
-  static protected double countsDev(double[] counts, double mean) {
-    int n = counts.length;
-    double sum = 0;  
-    for (int i = 0; i < n; i++) {
-      sum += (counts[i] - mean) * (counts[i] - mean);
-    }
-    return sum / n;  
-  }
-
-  static protected double countsMean(double[][] counts) {
-    int ni = counts.length;
-    int nj = counts[0].length;
-    double sum = 0;  
-    for (int i = 0; i < ni; i++) {
-      for (int j = 0; j < nj; j++) {
-        sum += counts[i][j];   
+    mean /= values.size();
+    
+    double res = Double.POSITIVE_INFINITY; 
+    for (int i = 0; i < values.size(); i++) {
+      double diff = Math.abs(values.get(i).x - mean);
+      if (0 < diff) {
+        res = Math.min(res, diff);
       }
     }
-    return sum / (ni * nj);  
-  }
+    return res;      
+  } else {
+    return 0;
+  }  
+  */
+    
+//    return 0.01d;
+  } 
+  
+  static protected double[] countsMeanDev(double[] counts) {
+    int n = counts.length;
+    double sum = 0;  
+    double sumsq = 0;
+    for (int i = 0; i < n; i++) {
+      double count = counts[i];
+      sum += count;
+      sumsq += count * count; 
+    }
+    double mean = sum / n;
+    double meansq = sumsq / n;
+    double dev = Math.sqrt(Math.max(0, meansq - mean * mean));    
+    return new double[] {mean, dev};    
+  }  
 
-  static protected double countsDev(double[][] counts, double mean) {
+//  static protected double countsMean(double[][] counts) {
+//    int ni = counts.length;
+//    int nj = counts[0].length;
+//    double sum = 0;  
+//    for (int i = 0; i < ni; i++) {
+//      for (int j = 0; j < nj; j++) {
+//        sum += counts[i][j];   
+//      }
+//    }
+//    return sum / (ni * nj);  
+//  }
+//
+//  static protected double countsDev(double[][] counts, double mean) {
+//    int ni = counts.length;
+//    int nj = counts[0].length;
+//    double sum = 0;  
+//    for (int i = 0; i < ni; i++) {
+//      for (int j = 0; j < nj; j++) {
+//        sum += (counts[i][j] - mean) * (counts[i][j] - mean);
+//      }    
+//    }
+//    return sum / (ni * nj);  
+//  }
+  
+  static protected double resx(ArrayList<Value2D> values) {
+    double res = Double.POSITIVE_INFINITY;
+    int mod = PApplet.max(1, values.size() / MAX_RES_SAMPLE_SIZE);
+    for (int i = 0; i < values.size(); i += mod) {
+      Value2D vali = values.get(i);
+      for (int j = 0; j < values.size(); j++) {
+        Value2D valj = values.get(j);
+        double diff = Math.abs(valj.x - vali.x);
+        if (0 < diff) {
+          res = Math.min(res, diff);
+        }        
+      }
+    }
+    return Math.max(res, 1.0d / MAX_HIST_BINS);
+    
+//  double res = Double.POSITIVE_INFINITY;
+//  for (int i = 0; i < values.size(); i++) {
+//    Value2D vali = values.get(i);
+//    for (int j = i + 1; j < values.size(); j++) {
+//      Value2D valj = values.get(j); 
+//      double diff = Math.abs(valj.x - vali.x);
+//      if (0 < diff) {
+//        res = Math.min(res, diff);
+//      }
+//    }
+//  }
+//  return res;
+//  return 0.01d;
+  
+  
+  /*
+  if (0 < values.size()) {
+    // Calculate the mean, and then find the smallest, non-zero distance with 
+    // all values.
+    double mean = 0;
+    for (int i = 0; i < values.size(); i++) {
+      mean += values.get(i).x;   
+    }
+    mean /= values.size();
+    
+    double res = Double.POSITIVE_INFINITY;
+    for (int i = 0; i < values.size(); i++) {
+      double diff = Math.abs(values.get(i).x - mean);
+      if (0 < diff) {
+        res = Math.min(res, diff);
+      }
+    }
+
+    return Math.max(0.01d, res);
+  } else {
+    return 0;
+  }
+      */
+      
+//  double res = Double.POSITIVE_INFINITY; 
+//  for (int i = 0; i < values.size(); i++) {
+//    Value2D vali = values.get(i);
+//    for (int j = i + 1; j < values.size(); j++) {
+//      Value2D valj = values.get(j); 
+//      double diff = Math.abs(valj.x - vali.x);
+//      if (0 < diff) {
+//        res = Math.min(res, diff);
+//      }
+//    }
+//  }
+//  return res;
+  }  
+
+  static protected double resy(ArrayList<Value2D> values) {
+    double res = Double.POSITIVE_INFINITY;
+    int mod = PApplet.max(1, values.size() / MAX_RES_SAMPLE_SIZE);
+    for (int i = 0; i < values.size(); i += mod) {
+      Value2D vali = values.get(i);
+      for (int j = 0; j < values.size(); j++) {
+        Value2D valj = values.get(j);
+        double diff = Math.abs(valj.y - vali.y);
+        if (0 < diff) {
+          res = Math.min(res, diff);
+        }        
+      }
+    }    
+    return Math.max(res, 1.0d / MAX_HIST_BINS);
+
+    
+  /*
+  if (0 < values.size()) {    
+    // Calculate the mean, and then find the smallest, non-zero distance with 
+    // all values.
+    double mean = 0;
+    for (int i = 0; i < values.size(); i++) {
+      mean += values.get(i).y;   
+    }
+    mean /= values.size();
+    
+    double res = Double.POSITIVE_INFINITY; 
+    for (int i = 0; i < values.size(); i++) {
+      double diff = Math.abs(values.get(i).y - mean);
+      if (0 < diff) {
+        res = Math.min(res, diff);
+      }
+    }
+    return Math.max(0.01d, res);
+  } else {
+    return 0;
+  }
+*/
+  
+  
+//  double res = Double.POSITIVE_INFINITY; 
+//  for (int i = 0; i < values.size(); i++) {
+//    Value2D vali = values.get(i);
+//    for (int j = i + 1; j < values.size(); j++) {
+//      Value2D valj = values.get(j); 
+//      double diff = Math.abs(valj.y - vali.y);
+//      if (0 < diff) {
+//        res = Math.min(res, diff);
+//      }
+//    }
+//  }
+//  return res;
+//  return 0.01d;
+  }  
+    
+  static protected double[] countsMeanDev(double[][] counts) {
     int ni = counts.length;
     int nj = counts[0].length;
-    double sum = 0;  
+    double sum = 0;
+    double sumsq = 0;
     for (int i = 0; i < ni; i++) {
       for (int j = 0; j < nj; j++) {
-        sum += (counts[i][j] - mean) * (counts[i][j] - mean);
-      }    
+        double count = counts[i][j];
+        sum += count;
+        sumsq += count * count; 
+      }
     }
-    return sum / (ni * nj);  
+    double mean = sum / (ni * nj);
+    double meansq = sumsq / (ni * nj);
+    double dev = Math.sqrt(Math.max(0, meansq - mean * mean));    
+    return new double[] {mean, dev};
+  }
+  
+  static protected class IndexedValue implements Comparable<IndexedValue> {
+    public float value;
+    public int index;
+    public boolean up;
+    
+    public IndexedValue(float value, int index) {
+      this(value, index, true);
+    }
+    
+    public IndexedValue(float value, int index, boolean up) {
+      this.value = value; // Assuming value is normalized (0, 1, -1 for missing data).
+      this.index = index;
+      this.up = up;
+    }
+    
+    // Returns a negative integer, zero, or a positive integer as this object is 
+    // less than, equal to, or greater than the specified object.
+    public int compareTo(IndexedValue obj) {
+      float a = this.value;
+      float b = obj.value;
+      
+      boolean bErr = b == -1 || Float.isNaN(b);
+      boolean aErr = a == -1 || Float.isNaN(a);
+      
+      if (bErr || aErr) {
+        // Missing/NaN data always at the bottom:
+        if (bErr && aErr) {
+          return 0;
+        } else if (bErr) {
+          return -1;
+        } else {
+          return +1; 
+        }
+      }
+      
+      if (!up) {
+        a = -a;
+        b = -b;
+      }
+      
+      if (a < b) return +1;
+      else if (b < a) return -1;
+      else return 0;
+    }
   }
 }
