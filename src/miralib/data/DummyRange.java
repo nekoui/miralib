@@ -1,8 +1,16 @@
+/* COPYRIGHT (C) 2014 Fathom Information Design. All Rights Reserved. */
+
 package miralib.data;
 
 import java.util.ArrayList;
 
 import processing.data.TableRow;
+
+/**
+ * Dummy ranger for variables not included in display/calculations (for example
+ * string variables).
+ *
+ */
 
 public class DummyRange extends Range {
 
