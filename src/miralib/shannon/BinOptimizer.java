@@ -165,7 +165,7 @@ public class BinOptimizer {
         int n = cost[0].index;    
         int n0 = n / blen1 + minNBins0;
         int n1 = n % blen1 + minNBins1;      
-        System.err.println(maxNBins0 + " " + maxNBins1 + " | " + n0 + " " + n1);
+//        System.err.println(maxNBins0 + " " + maxNBins1 + " | " + n0 + " " + n1);
         return new int[] {n0, n1};
       } else {
         if (PRINT_ERRORS) {
